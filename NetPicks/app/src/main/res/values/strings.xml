@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NetPicks</string>
+    <string name="leftToRightMessage">Left Swipes: %1$d</string>
+    <string name="RightToLeftMessage">Right Swipes: %1$d</string>
+</resources>
