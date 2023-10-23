@@ -2,4 +2,11 @@
     <string name="app_name">NetPicks</string>
     <string name="leftToRightMessage">Left Swipes: %1$d</string>
     <string name="RightToLeftMessage">Right Swipes: %1$d</string>
+    <string name="createRoom">Create Room</string>
+    <string name="joinRoom">Join Room</string>
+    <string name="EnterRoomID">Enter the Room ID</string>
+    <string name="RoomID">RoomID:</string>
+    <string name="NumberPeople">Number of People: </string>
+    <string name="Continue">Continue</string>
+    <string name="NetPicks">NetPicks</string>
 </resources>

@@ -3,25 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/left_Swipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/leftToRightMessage"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/start"
+    <TextView
+        android:id="@+id/right_Swipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="398dp" />
-
+        android:text="@string/RightToLeftMessage"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/left_Swipe"
+        tools:layout_editor_absoluteX="175dp"
+        tools:layout_editor_absoluteY="409dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
