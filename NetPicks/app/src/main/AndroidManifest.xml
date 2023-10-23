@@ -21,6 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="ca.unb.mobiledev.netpicks.RoomActivity" >
+        </activity>
+        <activity
+            android:name="ca.unb.mobiledev.netpicks.MovieRoom">
+
+        </activity>
     </application>
 
 </manifest>
