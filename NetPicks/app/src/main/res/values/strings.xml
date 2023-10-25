@@ -9,4 +9,9 @@
     <string name="NumberPeople">Number of People: </string>
     <string name="Continue">Continue</string>
     <string name="NetPicks">NetPicks</string>
+    <string name="SwipeLeft">Swipe Left</string>
+    <string name="SwipeRight">Swipe Right</string>
+    <string name="moviepost">MoviePost</string>
+    <string name="MovieTitle">Movie Title</string>
+    <string name="introduction">Introduction</string>
 </resources>
