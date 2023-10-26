@@ -81,7 +81,7 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context, DATABASE_NAME,
         val random = Random()
         val roomId = StringBuilder()
         for (i in 0 until 6) {
-            roomId.append(random.nextInt(10)) // 生成一个0-9之间的随机数
+            roomId.append(random.nextInt(10))
         }
         return roomId.toString()
     }
