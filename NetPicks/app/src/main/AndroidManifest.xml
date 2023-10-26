@@ -29,6 +29,10 @@
             android:name="ca.unb.mobiledev.netpicks.MovieRoom">
 
         </activity>
+        <activity
+            android:name="ca.unb.mobiledev.netpicks.MatchRoom">
+
+        </activity>
     </application>
 
 

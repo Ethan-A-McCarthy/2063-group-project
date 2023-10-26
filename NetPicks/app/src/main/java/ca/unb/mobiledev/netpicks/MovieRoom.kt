@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.netpicks
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,8 +22,9 @@ class MovieRoom : AppCompatActivity() {
     private lateinit var moviePosterImageView: ImageView
     private lateinit var likeButton: Button
     private lateinit var dislikeButton: Button
+    private lateinit var endMatch: Button
     private lateinit var movieTitle:TextView
-    private lateinit var movieIntro:TextView
+
 
     private val apiKey = "ef1e33d142b3fca8b88033b3ebecd001"
     private val retrofit = Retrofit.Builder()
@@ -32,6 +34,7 @@ class MovieRoom : AppCompatActivity() {
     private val service = retrofit.create(TmdbApi::class.java)
     private var movies: List<Movie> = emptyList()
     private var currentMovieIndex = 0
+    private val likeMovieList = ArrayList<Int>();
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +45,7 @@ class MovieRoom : AppCompatActivity() {
         likeButton = findViewById(R.id.likeButton)
         dislikeButton = findViewById(R.id.dislikeButton)
         movieTitle = findViewById(R.id.MovieTitle)
-        movieIntro = findViewById(R.id.MovieIntro)
+        endMatch = findViewById(R.id.endMatch)
         likeButton.setOnClickListener {
             onLikeButtonClicked(it)
         }
@@ -52,6 +55,13 @@ class MovieRoom : AppCompatActivity() {
         val introductionButton = findViewById<Button>(R.id.introductionButton)
         introductionButton.setOnClickListener {
             showIntroductionDialog()
+        }
+
+        endMatch.setOnClickListener {
+            val intent = Intent(this@MovieRoom, MatchRoom::class.java)
+            intent.putIntegerArrayListExtra("movieID",likeMovieList);
+            Log.d("movieroom", intent.getIntegerArrayListExtra("movieID").toString())
+            startActivity(intent)
         }
 
 
@@ -112,6 +122,10 @@ class MovieRoom : AppCompatActivity() {
         movieTitle.text = title
     }
     private fun onLikeButtonClicked(view: View) {
+        val movie = movies[currentMovieIndex]
+        val movieId = movie.id
+        likeMovieList.add(movieId)
+        Log.d("movieroom", likeMovieList.toString())
         showNextMovie()
     }
 

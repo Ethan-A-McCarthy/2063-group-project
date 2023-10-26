@@ -14,4 +14,6 @@
     <string name="moviepost">MoviePost</string>
     <string name="MovieTitle">Movie Title</string>
     <string name="introduction">Introduction</string>
+    <string name="end_match">End Match</string>
+    <string name="end_session">End Session</string>
 </resources>
