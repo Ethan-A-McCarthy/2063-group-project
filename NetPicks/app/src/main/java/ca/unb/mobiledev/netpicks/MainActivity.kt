@@ -23,9 +23,6 @@ class MainActivity:AppCompatActivity(){
         val buttonJoinRoom: Button = findViewById(R.id.button_join_room)
         val editTextRoomId: EditText = findViewById(R.id.edit_text_room_id)
 
-        //TODO: Need to create unique ID for each player and store it in to the room then in the room_activity we could get correct number of people
-
-
         buttonCreateRoom.setOnClickListener {
             val databaseHelper = DatabaseHelper(this)
             val roomId = databaseHelper.createRoom("newRoom")

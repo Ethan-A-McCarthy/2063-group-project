@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteDatabase
 import java.util.Random
+import java.util.UUID
 
 class DatabaseHelper(context: Context) :SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase) {
@@ -21,10 +22,11 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context, DATABASE_NAME,
     fun createRoom(name: String): String {
         val db = this.writableDatabase
         val roomId = generateRoomId()
+        val playerid = UUID.randomUUID().toString();
         val values = ContentValues().apply {
             put(COLUMN_ID, roomId)
             put(COLUMN_NAME, name)
-            put(COLUMN_PLAYERS, "")
+            put(COLUMN_PLAYERS, playerid)
         }
         db.insert(TABLE_NAME, null, values)
         return roomId

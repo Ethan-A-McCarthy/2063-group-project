@@ -32,16 +32,16 @@
 
     <Button
         android:id="@+id/dislikeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="49dp"
         android:layout_alignParentEnd="true"
         android:text="@string/SwipeLeft"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintBottom_toTopOf="@+id/introductionButton"
+        app:layout_constraintEnd_toStartOf="@+id/likeButton"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.79" />
+        app:layout_constraintTop_toBottomOf="@+id/moviePosterImageView"
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
         android:id="@+id/moviePosterImageView"
@@ -60,34 +60,40 @@
 
     <Button
         android:id="@+id/likeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="127dp"
+        android:layout_height="48dp"
         android:layout_alignParentStart="true"
         android:text="@string/SwipeRight"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/endMatch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.788"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.79" />
-
-    <TextView
-        android:id="@+id/MovieIntro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="20sp" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dislikeButton"
+        app:layout_constraintTop_toBottomOf="@+id/moviePosterImageView"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/introductionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
         android:text="@string/introduction"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/endMatch"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dislikeButton"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/endMatch"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:text="@string/end_match"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/introductionButton"
+        app:layout_constraintTop_toBottomOf="@+id/likeButton"
         app:layout_constraintVertical_bias="0.5" />
 
 
