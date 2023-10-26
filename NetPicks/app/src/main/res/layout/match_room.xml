@@ -71,7 +71,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.617"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.608" />
@@ -84,10 +84,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
+        app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38" />
+        app:layout_constraintVertical_bias="0.37" />
 
     <TextView
         android:id="@+id/MovieTitle3"
@@ -97,7 +97,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintHorizontal_bias="0.546"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.171" />
@@ -127,5 +127,89 @@
         app:layout_constraintStart_toEndOf="@+id/continue_match"
         app:layout_constraintTop_toBottomOf="@+id/MovieTitle2"
         app:layout_constraintVertical_bias="0.435" />
+
+    <TextView
+        android:id="@+id/like_2"
+        android:layout_width="84dp"
+        android:layout_height="94dp"
+        android:text="@string/Like"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toEndOf="@+id/MovieTitle1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.376" />
+
+    <TextView
+        android:id="@+id/like_1"
+        android:layout_width="84dp"
+        android:layout_height="94dp"
+        android:text="@string/Like"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/MovieTitle3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
+
+    <TextView
+        android:id="@+id/like_3"
+        android:layout_width="84dp"
+        android:layout_height="94dp"
+        android:text="@string/Like"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toEndOf="@+id/MovieTitle3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.61" />
+
+    <ImageView
+        android:id="@+id/thumb1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/moviepost"
+        android:scaleType="fitCenter"
+        android:src="@drawable/thumbup"
+        app:layout_constraintBottom_toBottomOf="@+id/like_1"
+        app:layout_constraintEnd_toEndOf="@+id/like_1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/like_1"
+        app:layout_constraintTop_toTopOf="@+id/like_1"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/thumb2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/moviepost"
+        android:scaleType="fitCenter"
+        android:src="@drawable/thumbup"
+        app:layout_constraintBottom_toBottomOf="@+id/like_2"
+        app:layout_constraintEnd_toEndOf="@+id/like_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/like_2"
+        app:layout_constraintTop_toTopOf="@+id/like_2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/thumb3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/moviepost"
+        android:scaleType="fitCenter"
+        android:src="@drawable/thumbup"
+        app:layout_constraintBottom_toBottomOf="@+id/like_3"
+        app:layout_constraintEnd_toEndOf="@+id/like_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/like_3"
+        app:layout_constraintTop_toTopOf="@+id/like_3"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

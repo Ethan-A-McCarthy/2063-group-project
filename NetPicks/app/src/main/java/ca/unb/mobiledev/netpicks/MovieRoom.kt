@@ -34,7 +34,7 @@ class MovieRoom : AppCompatActivity() {
     private val service = retrofit.create(TmdbApi::class.java)
     private var movies: List<Movie> = emptyList()
     private var currentMovieIndex = 0
-    private val likeMovieList = ArrayList<Int>();
+    private val likeMoviesList = ArrayList<Movie>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +59,13 @@ class MovieRoom : AppCompatActivity() {
 
         endMatch.setOnClickListener {
             val intent = Intent(this@MovieRoom, MatchRoom::class.java)
-            intent.putIntegerArrayListExtra("movieID",likeMovieList);
-            Log.d("movieroom", intent.getIntegerArrayListExtra("movieID").toString())
+            likeMoviesList.sortBy { it.likes }
+            intent.putExtra("movieID1",likeMoviesList[0].id)
+            intent.putExtra("movieID2",likeMoviesList[1].id)
+            intent.putExtra("movieID3",likeMoviesList[2].id)
+            intent.putExtra("movieLike1",likeMoviesList[0].likes)
+            intent.putExtra("movieLike2",likeMoviesList[1].likes)
+            intent.putExtra("movieLike3",likeMoviesList[2].likes)
             startActivity(intent)
         }
 
@@ -123,9 +128,8 @@ class MovieRoom : AppCompatActivity() {
     }
     private fun onLikeButtonClicked(view: View) {
         val movie = movies[currentMovieIndex]
-        val movieId = movie.id
-        likeMovieList.add(movieId)
-        Log.d("movieroom", likeMovieList.toString())
+        movie.likes++
+        likeMoviesList.add(movie)
         showNextMovie()
     }
 

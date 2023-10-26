@@ -16,4 +16,5 @@
     <string name="introduction">Introduction</string>
     <string name="end_match">End Match</string>
     <string name="end_session">End Session</string>
+    <string name="Like">Likes: </string>
 </resources>

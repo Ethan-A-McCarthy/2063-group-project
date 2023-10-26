@@ -23,9 +23,18 @@ class MatchRoom: AppCompatActivity() {
     private lateinit var movieTitle1: TextView
     private lateinit var movieTitle2:TextView
     private lateinit var movieTitle3:TextView
+    private lateinit var likeText1: TextView
+    private lateinit var likeText2: TextView
+    private lateinit var likeText3: TextView
     private lateinit var continueButton: Button
     private lateinit var EndButton: Button
-    private var list = ArrayList<Int>();
+    private var id1: Int = 0
+    private var id2: Int = 0
+    private var id3: Int = 0
+    private var like1: Int = 0
+    private var like2: Int = 0
+    private var like3: Int = 0
+
 
     private val apiKey = "ef1e33d142b3fca8b88033b3ebecd001"
     private val retrofit = Retrofit.Builder()
@@ -33,7 +42,7 @@ class MatchRoom: AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val service = retrofit.create(TmdbApi::class.java)
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("check",savedInstanceState.toString())
@@ -50,10 +59,20 @@ class MatchRoom: AppCompatActivity() {
         movieTitle3 = findViewById(R.id.MovieTitle3)
         continueButton = findViewById(R.id.continue_match)
         EndButton = findViewById(R.id.end_session)
+        likeText1 = findViewById(R.id.like_1)
+        likeText2 = findViewById(R.id.like_2)
+        likeText3 = findViewById(R.id.like_3)
 
-        list = intent.getIntegerArrayListExtra("movieID")!!
+        id1 = intent.getIntExtra("movieID1", 0)
+        id2 = intent.getIntExtra("movieID2", 0)
+        id3 = intent.getIntExtra("movieID3", 0)
+        like1 = intent.getIntExtra("movieLike1", 0)
+        like2 = intent.getIntExtra("movieLike2", 0)
+        like3 = intent.getIntExtra("movieLike3", 0)
+        likeText1.text = "Likes: ${like1}"
+        likeText2.text = "Likes: ${like2}"
+        likeText3.text = "Likes: ${like3}"
 
-        val number = list.size
 
         continueButton.setOnClickListener {
             finish();
@@ -68,7 +87,7 @@ class MatchRoom: AppCompatActivity() {
 
 
 
-        val call1 = service.getMovieDetails(list[0], apiKey)
+        val call1 = service.getMovieDetails(id1, apiKey)
         call1.enqueue(object : Callback<MovieDetails> {
             override fun onResponse(call1: Call<MovieDetails>, response1: Response<MovieDetails>) {
                 if (response1.isSuccessful) {
@@ -92,7 +111,7 @@ class MatchRoom: AppCompatActivity() {
         })
 
 
-        val call2 = service.getMovieDetails(list[1], apiKey)
+        val call2 = service.getMovieDetails(id2, apiKey)
         call2.enqueue(object : Callback<MovieDetails> {
             override fun onResponse(call2: Call<MovieDetails>, response2: Response<MovieDetails>) {
                 if (response2.isSuccessful) {
@@ -112,7 +131,7 @@ class MatchRoom: AppCompatActivity() {
         })
 
 
-        val call3 = service.getMovieDetails(list[2], apiKey)
+        val call3 = service.getMovieDetails(id3, apiKey)
         call3.enqueue(object : Callback<MovieDetails> {
             override fun onResponse(call3: Call<MovieDetails>, response3: Response<MovieDetails>) {
                 if (response3.isSuccessful) {
