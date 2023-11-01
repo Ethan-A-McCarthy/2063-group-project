@@ -11,6 +11,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class RoomActivity : AppCompatActivity() {
     private val database = FirebaseDatabase.getInstance()
@@ -26,6 +28,7 @@ class RoomActivity : AppCompatActivity() {
         val textViewPlayerCount: TextView = findViewById(R.id.text_view_player_count)
 
         val roomId = intent.getStringExtra("roomId")
+        val playerId = intent.getStringExtra("userId").toString()
 //        val databaseHelper = DatabaseHelper(this)
 //        val room = roomId?.let { databaseHelper.getRoom(it) }
 
@@ -35,22 +38,40 @@ class RoomActivity : AppCompatActivity() {
 //            Log.d("usernumber", room.players.size.toString())
 //        }
         if (roomId != null) {
-            roomsRef.child(roomId).child("users").addValueEventListener(object : ValueEventListener {
+            roomsRef.child(roomId).child("number").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    textViewPlayerCount.text = "Number of People: ${dataSnapshot.childrenCount}"
+                    textViewPlayerCount.text = "Number of People: ${dataSnapshot.getValue()}"
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.d("failure","Connection Failed")
                 }
             })
+
+            val buttonContinue :Button = findViewById(R.id.button_continue)
+            buttonContinue.setOnClickListener{
+                roomsRef.child(roomId).child("start").setValue(true)
+            }
+
+            val nextScreenRef = roomsRef.child(roomId).child("start")
+            nextScreenRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val nextScreen = dataSnapshot.getValue(Boolean::class.java)
+                    if (nextScreen == true) {
+                        val intent = Intent(this@RoomActivity, MovieRoom::class.java).apply {
+                            putExtra("roomId", roomId)
+                            putExtra("userId", playerId)
+                        }
+                        startActivity(intent)
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d("error", "some error")
+                }
+            })
         }
 
 
-        val buttonContinue :Button = findViewById(R.id.button_continue)
-        buttonContinue.setOnClickListener{
-            val intent = Intent(this@RoomActivity, MovieRoom::class.java)
-            startActivity(intent)
-        }
+
     }
 }
