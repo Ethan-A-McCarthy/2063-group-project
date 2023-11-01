@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "443817144939",
+    "project_id": "netpicks-b464b",
+    "storage_bucket": "netpicks-b464b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443817144939:android:a3472335fd676b53b0772e",
+        "android_client_info": {
+          "package_name": "ca.unb.mobiledev.netpicks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSGkhHdhbrxWdZihazVH-qfJ-tsu79NFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

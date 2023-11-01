@@ -3,9 +3,15 @@ package ca.unb.mobiledev.netpicks
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Random
 import java.util.UUID
 
@@ -15,6 +21,7 @@ private const val DEBUG_TAG = "Gestures"
 class MainActivity:AppCompatActivity(){
 
 
+    @OptIn(DelicateCoroutinesApi::class)
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -42,17 +49,29 @@ class MainActivity:AppCompatActivity(){
             roomManager.createRoom(roomid,playerid)
             Toast.makeText(this, "Room Created and the ID is $roomid", Toast.LENGTH_SHORT).show()
             val intent = Intent(this@MainActivity, RoomActivity::class.java).apply {
+                putExtra("userId", playerid)
                 putExtra("roomId", roomid)
             }
             startActivity(intent)
         }
 
         buttonJoinRoom.setOnClickListener {
-            val roomId = editTextRoomId.text.toString()
-            if (roomId.isNotEmpty()) {
-                Toast.makeText(this, "Join Room：$roomId", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Enter Room ID", Toast.LENGTH_SHORT).show()
+            GlobalScope.launch {
+                val roomId = editTextRoomId.text.toString()
+                val roomManager = RoomManager()
+                if (roomManager.joinRoom(roomId,playerid)) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Join Room：$roomId", Toast.LENGTH_SHORT).show()
+                    }
+                    val intent = Intent(this@MainActivity, RoomActivity::class.java).apply {
+                        putExtra("roomId", roomId)
+                    }
+                    startActivity(intent)
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Wrong Room ID", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

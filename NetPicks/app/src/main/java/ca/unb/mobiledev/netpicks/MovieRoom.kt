@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +24,10 @@ class MovieRoom : AppCompatActivity() {
     private lateinit var dislikeButton: Button
     private lateinit var endMatch: Button
     private lateinit var movieTitle:TextView
+    private val database = FirebaseDatabase.getInstance()
+    private val roomsRef = database.getReference("rooms")
+    private var roomId = ""
+    private var playerId = ""
 
 
     private val apiKey = "ef1e33d142b3fca8b88033b3ebecd001"
@@ -41,16 +45,19 @@ class MovieRoom : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.movie_room)
 
+        roomId = intent.getStringExtra("roomId").toString()
+        playerId = intent.getStringExtra("userId").toString()
+
         moviePosterImageView = findViewById(R.id.moviePosterImageView)
         likeButton = findViewById(R.id.likeButton)
         dislikeButton = findViewById(R.id.dislikeButton)
         movieTitle = findViewById(R.id.MovieTitle)
         endMatch = findViewById(R.id.endMatch)
         likeButton.setOnClickListener {
-            onLikeButtonClicked(it)
+            onLikeButtonClicked()
         }
         dislikeButton.setOnClickListener {
-            onDislikeButtonClicked(it)
+            onDislikeButtonClicked()
         }
         val introductionButton = findViewById<Button>(R.id.introductionButton)
         introductionButton.setOnClickListener {
@@ -126,14 +133,24 @@ class MovieRoom : AppCompatActivity() {
 
         movieTitle.text = title
     }
-    private fun onLikeButtonClicked(view: View) {
+
+    private fun onLikeButtonClicked() {
         val movie = movies[currentMovieIndex]
+        roomsRef.child(roomId).child("movie").get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                println("Movie exists")
+            } else {
+                val movieIds = hashMapOf<String,Int>()
+                movieIds[movie.id.toString()] = 1
+                roomsRef.child(roomId).child("movie").setValue(movieIds)
+            }
+        }
         movie.likes++
         likeMoviesList.add(movie)
         showNextMovie()
     }
 
-    private fun onDislikeButtonClicked(view: View) {
+    private fun onDislikeButtonClicked() {
         showNextMovie()
     }
 
