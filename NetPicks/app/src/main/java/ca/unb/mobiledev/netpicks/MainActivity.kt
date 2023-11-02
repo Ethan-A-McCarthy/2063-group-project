@@ -33,16 +33,6 @@ class MainActivity:AppCompatActivity(){
 
         val playerid = UUID.randomUUID().toString();
 
-//        buttonCreateRoom.setOnClickListener {
-//            val databaseHelper = DatabaseHelper(this)
-//            val roomId = databaseHelper.createRoom("newRoom")
-//            Toast.makeText(this, "Room Created and the ID is $roomId", Toast.LENGTH_SHORT).show()
-//            val intent = Intent(this@MainActivity, RoomActivity::class.java).apply {
-//                putExtra("roomId", roomId)
-//            }
-//            startActivity(intent)
-//        }
-
         buttonCreateRoom.setOnClickListener {
             val roomManager = RoomManager()
             val roomid = generateRoomId()

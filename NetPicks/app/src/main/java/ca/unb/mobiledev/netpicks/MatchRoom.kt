@@ -9,6 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,12 +32,15 @@ class MatchRoom: AppCompatActivity() {
     private lateinit var likeText3: TextView
     private lateinit var continueButton: Button
     private lateinit var EndButton: Button
-    private var id1: Int = 0
+    private var id1 = 0
     private var id2: Int = 0
     private var id3: Int = 0
     private var like1: Int = 0
     private var like2: Int = 0
     private var like3: Int = 0
+    private val database = FirebaseDatabase.getInstance()
+    private val roomsRef = database.getReference("rooms")
+    private var roomId = ""
 
 
     private val apiKey = "ef1e33d142b3fca8b88033b3ebecd001"
@@ -45,7 +52,6 @@ class MatchRoom: AppCompatActivity() {
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("check",savedInstanceState.toString())
         if (savedInstanceState != null) {
             super.onSaveInstanceState(savedInstanceState)
         };
@@ -62,29 +68,82 @@ class MatchRoom: AppCompatActivity() {
         likeText1 = findViewById(R.id.like_1)
         likeText2 = findViewById(R.id.like_2)
         likeText3 = findViewById(R.id.like_3)
+        roomId = intent.getStringExtra("roomId").toString()
 
-        id1 = intent.getIntExtra("movieID1", 0)
+
+        id1 = intent.getIntExtra("movieID1",0)
         id2 = intent.getIntExtra("movieID2", 0)
         id3 = intent.getIntExtra("movieID3", 0)
         like1 = intent.getIntExtra("movieLike1", 0)
         like2 = intent.getIntExtra("movieLike2", 0)
         like3 = intent.getIntExtra("movieLike3", 0)
-        likeText1.text = "Likes: ${like1}"
-        likeText2.text = "Likes: ${like2}"
-        likeText3.text = "Likes: ${like3}"
+        likeText1.text = "Likes: $like1"
+        likeText2.text = "Likes: $like2"
+        likeText3.text = "Likes: $like3"
 
 
         continueButton.setOnClickListener {
-            finish();
+            roomsRef.child(roomId).child("movie").child(id1.toString()).removeValue().addOnCompleteListener { task->
+                if(task.isSuccessful){
+                    Log.d("success","Successfully remove")
+                }else{
+                    Log.d("Fail","Fail to remove")
+                }
+            }
+            roomsRef.child(roomId).child("movie").child(id2.toString()).removeValue().addOnCompleteListener { task->
+                if(task.isSuccessful){
+                    Log.d("success","Successfully remove")
+                }else{
+                    Log.d("Fail","Fail to remove")
+                }
+            }
+            roomsRef.child(roomId).child("movie").child(id3.toString()).removeValue().addOnCompleteListener { task->
+                if(task.isSuccessful){
+                    Log.d("success","Successfully remove")
+                }else{
+                    Log.d("Fail","Fail to remove")
+                }
+            }
+            roomsRef.child(roomId).child("match").setValue(false)
+
+//            finish();
         }
+
+        val nextScreenRef = roomsRef.child(roomId).child("match")
+        nextScreenRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val nextScreen = dataSnapshot.getValue(Boolean::class.java)
+                if (nextScreen == false) {
+                    finish()
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("error", "some error")
+            }
+        })
 
         EndButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+            roomsRef.child(roomId).child("endRoom").setValue(true)
         }
 
+        val endRoomRef = roomsRef.child(roomId).child("endRoom")
+        endRoomRef.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val endRoom = snapshot.getValue(Boolean::class.java)
+                if( endRoom == true){
+                    val roomManager = RoomManager()
+                    roomManager.leaveRoom(roomId)
+                    val intent = Intent(this@MatchRoom, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
+            }
 
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("error","some error")
+            }
+
+        })
 
 
         val call1 = service.getMovieDetails(id1, apiKey)

@@ -29,18 +29,15 @@ class RoomActivity : AppCompatActivity() {
 
         val roomId = intent.getStringExtra("roomId")
         val playerId = intent.getStringExtra("userId").toString()
-//        val databaseHelper = DatabaseHelper(this)
-//        val room = roomId?.let { databaseHelper.getRoom(it) }
+        var number = ""
 
         textViewRoomId.text = "RoomID: $roomId"
-//        if (room != null) {
-//            textViewPlayerCount.text = "Number of People: ${room.players.size}"
-//            Log.d("usernumber", room.players.size.toString())
-//        }
+
         if (roomId != null) {
             roomsRef.child(roomId).child("number").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    textViewPlayerCount.text = "Number of People: ${dataSnapshot.getValue()}"
+                    textViewPlayerCount.text = "Number of People: ${dataSnapshot.value}"
+                    number = dataSnapshot.value.toString()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -61,6 +58,7 @@ class RoomActivity : AppCompatActivity() {
                         val intent = Intent(this@RoomActivity, MovieRoom::class.java).apply {
                             putExtra("roomId", roomId)
                             putExtra("userId", playerId)
+                            putExtra("userNumber", number)
                         }
                         startActivity(intent)
                     }
