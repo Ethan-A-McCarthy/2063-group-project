@@ -33,6 +33,10 @@
             android:name="ca.unb.mobiledev.netpicks.MatchRoom">
 
         </activity>
+        <activity
+            android:name="ca.unb.mobiledev.netpicks.EarlyMatchRoom">
+
+        </activity>
     </application>
 
 

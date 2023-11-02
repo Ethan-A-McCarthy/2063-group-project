@@ -20,21 +20,10 @@ class RoomManager {
         roomsRef.child(roomId).setValue(Room(roomId))
         roomsRef.child(roomId).child("number").setValue(1)
         roomsRef.child(roomId).child("start").setValue(false)
+        roomsRef.child(roomId).child("match").setValue(false)
         roomsRef.child(roomId).child("users").child(userId).setValue(true)
+        roomsRef.child(roomId).child("endRoom").setValue(false)
 
-
-//        roomsRef.child(roomId).child("users").addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                if (dataSnapshot.childrenCount.toInt() == 0) {
-//
-//                    roomsRef.child(roomId).removeValue()
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.d("failure","Connection Failed")
-//            }
-//        })
     }
 
     suspend fun joinRoom(roomId: String, userId: String): Boolean = suspendCoroutine { continuation ->
@@ -69,8 +58,8 @@ class RoomManager {
         }
     }
 
-    fun leaveRoom(roomId: String, userId: String) {
-        roomsRef.child(roomId).child("users").child(userId).removeValue()
+    fun leaveRoom(roomId: String) {
+        roomsRef.child(roomId).removeValue()
 
     }
 

@@ -10,13 +10,22 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
+import com.google.firebase.database.ValueEventListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MovieRoom : AppCompatActivity() {
     private lateinit var moviePosterImageView: ImageView
@@ -28,6 +37,8 @@ class MovieRoom : AppCompatActivity() {
     private val roomsRef = database.getReference("rooms")
     private var roomId = ""
     private var playerId = ""
+    private var userNumber = ""
+    private var topThreeMovies = HashMap<String, Int>()
 
 
     private val apiKey = "ef1e33d142b3fca8b88033b3ebecd001"
@@ -38,7 +49,6 @@ class MovieRoom : AppCompatActivity() {
     private val service = retrofit.create(TmdbApi::class.java)
     private var movies: List<Movie> = emptyList()
     private var currentMovieIndex = 0
-    private val likeMoviesList = ArrayList<Movie>()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +57,8 @@ class MovieRoom : AppCompatActivity() {
 
         roomId = intent.getStringExtra("roomId").toString()
         playerId = intent.getStringExtra("userId").toString()
+        userNumber = intent.getStringExtra("userNumber").toString()
+
 
         moviePosterImageView = findViewById(R.id.moviePosterImageView)
         likeButton = findViewById(R.id.likeButton)
@@ -65,16 +77,60 @@ class MovieRoom : AppCompatActivity() {
         }
 
         endMatch.setOnClickListener {
-            val intent = Intent(this@MovieRoom, MatchRoom::class.java)
-            likeMoviesList.sortBy { it.likes }
-            intent.putExtra("movieID1",likeMoviesList[0].id)
-            intent.putExtra("movieID2",likeMoviesList[1].id)
-            intent.putExtra("movieID3",likeMoviesList[2].id)
-            intent.putExtra("movieLike1",likeMoviesList[0].likes)
-            intent.putExtra("movieLike2",likeMoviesList[1].likes)
-            intent.putExtra("movieLike3",likeMoviesList[2].likes)
-            startActivity(intent)
+            if(topThreeMovies.size>=3){
+                roomsRef.child(roomId).child("match").setValue(true)
+            }
         }
+
+        val nextScreenRef = roomsRef.child(roomId).child("match")
+        nextScreenRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val nextScreen = dataSnapshot.getValue(Boolean::class.java)
+                if (nextScreen == true && topThreeMovies.size>=3) {
+                    val intent = Intent(this@MovieRoom, MatchRoom::class.java)
+                    var i = 1
+                    for((likeMovie,count) in topThreeMovies){
+                        intent.putExtra("movieID$i",likeMovie.toInt())
+                        intent.putExtra("movieLike$i",count)
+                        i++
+                    }
+                    intent.putExtra("roomId", roomId)
+                    topThreeMovies.clear()
+                    startActivity(intent)
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("error", "some error")
+            }
+        })
+
+        roomsRef.child(roomId).child("movie").addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val movieMap = snapshot.getValue(object: GenericTypeIndicator<HashMap<String,Int>>(){})?: hashMapOf()
+                var likecount = 0
+                var likeMovieId = ""
+                val topMovies = movieMap.entries.sortedByDescending { it.value }.take(1)
+                for((likeMovie,count) in topMovies) {
+                    likeMovieId = likeMovie
+                    likecount = count
+                }
+                if(likecount.toString() == userNumber && userNumber.toInt() >= 2){
+                    val intent = Intent(this@MovieRoom, EarlyMatchRoom::class.java)
+                    roomsRef.child(roomId).child("match").setValue(true)
+                    intent.putExtra("movieID1", likeMovieId.toInt())
+                    intent.putExtra("roomId", roomId)
+                    startActivity(intent)
+                }
+                val topThreeLikeMovies = movieMap.entries.sortedByDescending { it.value }.take(3)
+                for((likeMovie,count) in topThreeLikeMovies) {
+                    topThreeMovies[likeMovie] = count
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Failure", "Failed to read value.", error.toException())
+            }
+        })
 
 
         fetchMovieList()
@@ -138,20 +194,42 @@ class MovieRoom : AppCompatActivity() {
         val movie = movies[currentMovieIndex]
         roomsRef.child(roomId).child("movie").get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
-                println("Movie exists")
+                addLikeMovie(movie.id)
             } else {
                 val movieIds = hashMapOf<String,Int>()
                 movieIds[movie.id.toString()] = 1
                 roomsRef.child(roomId).child("movie").setValue(movieIds)
             }
         }
-        movie.likes++
-        likeMoviesList.add(movie)
         showNextMovie()
     }
 
     private fun onDislikeButtonClicked() {
         showNextMovie()
+    }
+    private fun addLikeMovie(id: Int){
+        roomsRef.child(roomId).child("movie").runTransaction(object: Transaction.Handler{
+            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                val movieMap = currentData.getValue(object :GenericTypeIndicator<HashMap<String, Int>>(){})?: hashMapOf()
+                val currentCount = movieMap[id.toString()]?:0
+                movieMap[id.toString()] = currentCount+1
+
+                currentData.value = movieMap
+                return Transaction.success(currentData)
+            }
+
+            override fun onComplete(
+                error: DatabaseError?,
+                committed: Boolean,
+                currentData: DataSnapshot?
+            ) {
+                if (error != null) {
+                    Log.w("database error", "Failed to commit transaction", error.toException())
+                } else {
+                    Log.d("database success", "Transaction committed successfully")
+                }
+            }
+        })
     }
 
     private fun showNextMovie() {
