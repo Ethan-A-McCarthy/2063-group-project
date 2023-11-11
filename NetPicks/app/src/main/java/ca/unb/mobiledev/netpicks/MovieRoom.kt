@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GestureDetectorCompat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -26,8 +29,10 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.lang.Math.abs
 
-class MovieRoom : AppCompatActivity() {
+private const val DEBUG_TAG = "Gestures"
+class MovieRoom : AppCompatActivity(), GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener{
     private lateinit var moviePosterImageView: ImageView
     private lateinit var likeButton: Button
     private lateinit var dislikeButton: Button
@@ -39,6 +44,11 @@ class MovieRoom : AppCompatActivity() {
     private var playerId = ""
     private var userNumber = ""
     private var topThreeMovies = HashMap<String, Int>()
+
+    //swipe variables
+    private val swipeThreshold = 100
+    private val swipeVelocityThreshold = 100
+    private lateinit var mDetector: GestureDetectorCompat
 
 
     private val apiKey = "ef1e33d142b3fca8b88033b3ebecd001"
@@ -58,6 +68,8 @@ class MovieRoom : AppCompatActivity() {
         roomId = intent.getStringExtra("roomId").toString()
         playerId = intent.getStringExtra("userId").toString()
         userNumber = intent.getStringExtra("userNumber").toString()
+
+        mDetector = GestureDetectorCompat(this, this)
 
 
         moviePosterImageView = findViewById(R.id.moviePosterImageView)
@@ -269,5 +281,74 @@ class MovieRoom : AppCompatActivity() {
         })
     }
 
+    override fun onFling(event1: MotionEvent, event2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        Log.d(DEBUG_TAG, "onFling: $event1 $event2")
+        try {
+            val diffX = event2.x - event1.x
+            val diffY = event2.y - event1.y
+
+            if (kotlin.math.abs(diffX) > kotlin.math.abs(diffY)){
+                if (kotlin.math.abs(diffX) > swipeThreshold && kotlin.math.abs(velocityX) > swipeVelocityThreshold) {
+                    if (diffX > 0) {
+                        onLikeButtonClicked()
+                    }
+                    else {
+                        onDislikeButtonClicked()
+                    }
+                }
+            }
+        }
+        catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+        return true
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        mDetector.onTouchEvent(event)
+        return super.onTouchEvent(event)
+    }
+
+    override fun onDown(event: MotionEvent): Boolean {
+        return true
+    }
+
+    override fun onLongPress(event: MotionEvent) {
+        Log.d(DEBUG_TAG, "onLongPress: $event")
+    }
+
+    override fun onScroll(
+        event1: MotionEvent,
+        event2: MotionEvent,
+        distanceX: Float,
+        distanceY: Float
+    ): Boolean {
+        Log.d(DEBUG_TAG, "onScroll: $event1 $event2")
+        return true
+    }
+
+    override fun onShowPress(event: MotionEvent) {
+        Log.d(DEBUG_TAG, "onShowPress: $event")
+    }
+
+    override fun onSingleTapUp(event: MotionEvent): Boolean {
+        Log.d(DEBUG_TAG, "onSingleTapUp: $event")
+        return true
+    }
+
+    override fun onDoubleTap(event: MotionEvent): Boolean {
+        Log.d(DEBUG_TAG, "onDoubleTap: $event")
+        return true
+    }
+
+    override fun onDoubleTapEvent(event: MotionEvent): Boolean {
+        Log.d(DEBUG_TAG, "onDoubleTapEvent: $event")
+        return true
+    }
+
+    override fun onSingleTapConfirmed(event: MotionEvent): Boolean {
+        Log.d(DEBUG_TAG, "onSingleTapConfirmed: $event")
+        return true
+    }
 
 }
