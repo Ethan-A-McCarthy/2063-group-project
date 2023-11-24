@@ -2,6 +2,7 @@ package ca.unb.mobiledev.netpicks
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -32,6 +33,9 @@ class MatchRoom: AppCompatActivity() {
     private lateinit var likeText3: TextView
     private lateinit var continueButton: Button
     private lateinit var EndButton: Button
+    private lateinit var googleButton1: Button
+    private lateinit var googleButton2: Button
+    private lateinit var googleButton3: Button
     private var id1 = 0
     private var id2: Int = 0
     private var id3: Int = 0
@@ -80,6 +84,46 @@ class MatchRoom: AppCompatActivity() {
         likeText1.text = "Likes: $like1"
         likeText2.text = "Likes: $like2"
         likeText3.text = "Likes: $like3"
+
+        googleButton1 = findViewById(R.id.openGoogleButton1)
+        googleButton2 = findViewById(R.id.openGoogleButton2)
+        googleButton3 = findViewById(R.id.openGoogleButton3)
+
+        googleButton1.setOnClickListener{
+            val title = movieTitle1.text.toString()
+            if (title.isNotEmpty()){
+                val googleSearch = "http://www.google.com/search?q=$title"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this, "Action Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        googleButton2.setOnClickListener{
+            val title = movieTitle2.text.toString()
+            if (title.isNotEmpty()){
+                val googleSearch = "http://www.google.com/search?q=$title"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this, "Action Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        googleButton3.setOnClickListener{
+            val title = movieTitle3.text.toString()
+            if (title.isNotEmpty()){
+                val googleSearch = "http://www.google.com/search?q=$title"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this, "Action Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
 
 
         continueButton.setOnClickListener {
@@ -210,6 +254,8 @@ class MatchRoom: AppCompatActivity() {
                 Toast.makeText(this@MatchRoom, "Network request failed", Toast.LENGTH_SHORT).show()
             }
         })
+
+
 
     }
 

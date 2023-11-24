@@ -128,6 +128,44 @@
         app:layout_constraintTop_toBottomOf="@+id/MovieTitle2"
         app:layout_constraintVertical_bias="0.435" />
 
+    <Button
+        android:id="@+id/openGoogleButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="10dp"
+        android:text="Open Google"
+        app:layout_constraintBottom_toTopOf="@+id/MovieTitle1"
+        app:layout_constraintEnd_toStartOf="@+id/like_1"
+        app:layout_constraintStart_toEndOf="@+id/moviePosterImageView1"
+        app:layout_constraintTop_toBottomOf="@+id/MovieTitle3" />
+
+    <Button
+        android:id="@+id/openGoogleButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:text="Open Google"
+        app:layout_constraintBottom_toTopOf="@+id/MovieTitle2"
+        app:layout_constraintEnd_toStartOf="@+id/like_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/moviePosterImageView2"
+        app:layout_constraintTop_toBottomOf="@+id/MovieTitle1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/openGoogleButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Google"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/like_3"
+        app:layout_constraintHorizontal_bias="0.403"
+        app:layout_constraintStart_toEndOf="@+id/moviePosterImageView3"
+        app:layout_constraintTop_toBottomOf="@+id/MovieTitle2"
+        app:layout_constraintVertical_bias="0.004" />
+
     <TextView
         android:id="@+id/like_2"
         android:layout_width="84dp"
