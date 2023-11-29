@@ -6,6 +6,6 @@ NetPicks is an app to help you and your friends make decisions. Imagine you are 
 Because of the youtube version, minSdk for Netpicks is 24, API 28 works best.
 
 ### How to use: 
-
+Open the app and you will be on the main menu screen. This screen has the create room and join room options, the person creating the 
 
 
