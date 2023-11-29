@@ -92,8 +92,12 @@ class MatchRoom: AppCompatActivity() {
         googleButton1.setOnClickListener{
             val title = movieTitle1.text.toString()
             if (title.isNotEmpty()){
-                val googleSearch = "http://www.google.com/search?q=$title"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+//                val googleSearch = "http://www.google.com/search?q=$title"
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+                val intent = Intent(Intent.ACTION_SEARCH)
+                intent.setPackage("com.google.android.youtube")
+                intent.putExtra("query", title)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
             else{
@@ -104,8 +108,12 @@ class MatchRoom: AppCompatActivity() {
         googleButton2.setOnClickListener{
             val title = movieTitle2.text.toString()
             if (title.isNotEmpty()){
-                val googleSearch = "http://www.google.com/search?q=$title"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+//                val googleSearch = "http://www.google.com/search?q=$title"
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+                val intent = Intent(Intent.ACTION_SEARCH)
+                intent.setPackage("com.google.android.youtube")
+                intent.putExtra("query", title)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
             else{
@@ -116,8 +124,12 @@ class MatchRoom: AppCompatActivity() {
         googleButton3.setOnClickListener{
             val title = movieTitle3.text.toString()
             if (title.isNotEmpty()){
-                val googleSearch = "http://www.google.com/search?q=$title"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+//                val googleSearch = "http://www.google.com/search?q=$title"
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
+                val intent = Intent(Intent.ACTION_SEARCH)
+                intent.setPackage("com.google.android.youtube")
+                intent.putExtra("query", title)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
             else{

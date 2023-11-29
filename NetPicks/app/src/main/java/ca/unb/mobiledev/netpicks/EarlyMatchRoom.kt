@@ -27,6 +27,7 @@ class EarlyMatchRoom: AppCompatActivity() {
     private lateinit var EndButton: Button
     private lateinit var moviePosterImageView4: ImageView
     private lateinit var movieTitle: TextView
+    private lateinit var googleButton1: Button
     private var id: Int = 0
     private var roomId = ""
     private val database = FirebaseDatabase.getInstance()
@@ -43,17 +44,31 @@ class EarlyMatchRoom: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.early_match_room)
-
+        var title = ""
         continueButton = findViewById(R.id.continue_match)
         EndButton = findViewById(R.id.end_session)
         moviePosterImageView4 = findViewById(R.id.moviePosterImageView4)
         movieTitle = findViewById(R.id.movieTitle)
+        googleButton1 = findViewById(R.id.openGoogleButton)
         id = intent.getIntExtra("movieID1", 0)
         roomId = intent.getStringExtra("roomId").toString()
         val introductionButton = findViewById<Button>(R.id.introductionButton)
 
         introductionButton.setOnClickListener {
             showIntroductionDialog()
+        }
+
+        googleButton1.setOnClickListener{
+            if (title.isNotEmpty()){
+                val intent = Intent(Intent.ACTION_SEARCH)
+                intent.setPackage("com.google.android.youtube")
+                intent.putExtra("query", title)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
+            else{
+                Toast.makeText(this, "Action Failed", Toast.LENGTH_SHORT).show()
+            }
         }
 
         continueButton.setOnClickListener {
@@ -110,6 +125,9 @@ class EarlyMatchRoom: AppCompatActivity() {
                 if (response1.isSuccessful) {
                     val movieDetails1 = response1.body()
                     val title1 = movieDetails1?.title
+                    if (title1 != null) {
+                        title = title1
+                    }
                     val posterPath1 = movieDetails1?.poster_path
                     if (title1 != null) {
                         Log.d("matchroom", title1)
