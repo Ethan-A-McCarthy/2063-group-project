@@ -79,10 +79,10 @@ class EarlyMatchRoom: AppCompatActivity() {
                     Log.d("Fail","Fail to remove")
                 }
             }
-            roomsRef.child(roomId).child("match").setValue(false)
+            roomsRef.child(roomId).child("earlyMatch").setValue(false)
         }
 
-        val nextScreenRef = roomsRef.child(roomId).child("match")
+        val nextScreenRef = roomsRef.child(roomId).child("earlyMatch")
         nextScreenRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val nextScreen = dataSnapshot.getValue(Boolean::class.java)

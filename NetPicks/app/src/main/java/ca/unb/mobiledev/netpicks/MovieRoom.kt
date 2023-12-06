@@ -44,6 +44,7 @@ class MovieRoom : AppCompatActivity(), GestureDetector.OnGestureListener, Gestur
     private var playerId = ""
     private var userNumber = ""
     private var topThreeMovies = HashMap<String, Int>()
+    private var totalCurrentCount = 0
 
     //swipe variables
     private val swipeThreshold = 100
@@ -119,16 +120,15 @@ class MovieRoom : AppCompatActivity(), GestureDetector.OnGestureListener, Gestur
         roomsRef.child(roomId).child("movie").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val movieMap = snapshot.getValue(object: GenericTypeIndicator<HashMap<String,Int>>(){})?: hashMapOf()
-                var likecount = 0
                 var likeMovieId = ""
                 val topMovies = movieMap.entries.sortedByDescending { it.value }.take(1)
                 for((likeMovie,count) in topMovies) {
                     likeMovieId = likeMovie
-                    likecount = count
                 }
-                if(likecount.toString() == userNumber && userNumber.toInt() >= 2){
+                if(totalCurrentCount.toString() == userNumber && userNumber.toInt() >= 2){
+                    totalCurrentCount = 0
                     val intent = Intent(this@MovieRoom, EarlyMatchRoom::class.java)
-                    roomsRef.child(roomId).child("match").setValue(true)
+                    roomsRef.child(roomId).child("earlyMatch").setValue(true)
                     intent.putExtra("movieID1", likeMovieId.toInt())
                     intent.putExtra("roomId", roomId)
                     startActivity(intent)
@@ -225,7 +225,7 @@ class MovieRoom : AppCompatActivity(), GestureDetector.OnGestureListener, Gestur
                 val movieMap = currentData.getValue(object :GenericTypeIndicator<HashMap<String, Int>>(){})?: hashMapOf()
                 val currentCount = movieMap[id.toString()]?:0
                 movieMap[id.toString()] = currentCount+1
-
+                totalCurrentCount = currentCount + 1
                 currentData.value = movieMap
                 return Transaction.success(currentData)
             }
