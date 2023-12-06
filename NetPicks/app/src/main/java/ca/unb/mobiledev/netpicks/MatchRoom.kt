@@ -97,7 +97,7 @@ class MatchRoom: AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_SEARCH)
                 intent.setPackage("com.google.android.youtube")
                 intent.putExtra("query", title)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             }
             else{
@@ -113,7 +113,7 @@ class MatchRoom: AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_SEARCH)
                 intent.setPackage("com.google.android.youtube")
                 intent.putExtra("query", title)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             }
             else{
@@ -129,7 +129,7 @@ class MatchRoom: AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_SEARCH)
                 intent.setPackage("com.google.android.youtube")
                 intent.putExtra("query", title)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
             }
             else{
