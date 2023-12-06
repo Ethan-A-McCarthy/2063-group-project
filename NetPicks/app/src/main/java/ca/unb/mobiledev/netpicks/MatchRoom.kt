@@ -90,7 +90,7 @@ class MatchRoom: AppCompatActivity() {
         googleButton3 = findViewById(R.id.openGoogleButton3)
 
         googleButton1.setOnClickListener{
-            val title = movieTitle1.text.toString()
+            val title = movieTitle3.text.toString()
             if (title.isNotEmpty()){
 //                val googleSearch = "http://www.google.com/search?q=$title"
 //                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
@@ -106,7 +106,7 @@ class MatchRoom: AppCompatActivity() {
         }
 
         googleButton2.setOnClickListener{
-            val title = movieTitle2.text.toString()
+            val title = movieTitle1.text.toString()
             if (title.isNotEmpty()){
 //                val googleSearch = "http://www.google.com/search?q=$title"
 //                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
@@ -122,7 +122,7 @@ class MatchRoom: AppCompatActivity() {
         }
 
         googleButton3.setOnClickListener{
-            val title = movieTitle3.text.toString()
+            val title = movieTitle2.text.toString()
             if (title.isNotEmpty()){
 //                val googleSearch = "http://www.google.com/search?q=$title"
 //                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(googleSearch))
@@ -207,14 +207,14 @@ class MatchRoom: AppCompatActivity() {
             override fun onResponse(call1: Call<MovieDetails>, response1: Response<MovieDetails>) {
                 if (response1.isSuccessful) {
                     val movieDetails1 = response1.body()
-                    val title1 = movieDetails1?.title
+                    val title3 = movieDetails1?.title
                     val posterPath1 = movieDetails1?.poster_path
-                    if (title1 != null) {
-                        Log.d("matchroom", title1)
+                    if (title3 != null) {
+                        Log.d("matchroom", title3)
                     }
                     Picasso.get().load("https://image.tmdb.org/t/p/w500$posterPath1").into(moviePosterImageView1)
 
-                    movieTitle1.text = title1
+                    movieTitle3.text = title3
 
 
                 }
@@ -231,12 +231,12 @@ class MatchRoom: AppCompatActivity() {
             override fun onResponse(call2: Call<MovieDetails>, response2: Response<MovieDetails>) {
                 if (response2.isSuccessful) {
                     val movieDetails2 = response2.body()
-                    val title2 = movieDetails2?.title
+                    val title1 = movieDetails2?.title
                     val posterPath2 = movieDetails2?.poster_path
 
                     Picasso.get().load("https://image.tmdb.org/t/p/w500$posterPath2").into(moviePosterImageView2)
 
-                    movieTitle2.text = title2
+                    movieTitle1.text = title1
                 }
             }
 
@@ -251,12 +251,12 @@ class MatchRoom: AppCompatActivity() {
             override fun onResponse(call3: Call<MovieDetails>, response3: Response<MovieDetails>) {
                 if (response3.isSuccessful) {
                     val movieDetails3 = response3.body()
-                    val title3 = movieDetails3?.title
+                    val title2 = movieDetails3?.title
                     val posterPath3 = movieDetails3?.poster_path
 
                     Picasso.get().load("https://image.tmdb.org/t/p/w500$posterPath3").into(moviePosterImageView3)
 
-                    movieTitle3.text = title3
+                    movieTitle2.text = title2
 
 
                 }
